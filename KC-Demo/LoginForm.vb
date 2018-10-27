@@ -43,9 +43,9 @@ Public Class LoginForm
         _urlBuilder.Append(Me.txtServer.Text.Trim())
         _urlBuilder.Append(":")
         _urlBuilder.Append(Me.txtPort.Text.Trim())
-        _urlBuilder.Append("/smarthome.IMCPlatform/user/v1.0/login.action")
+        _urlBuilder.Append("/smarthome.IMCPlatform/user/v1.0/loginByPhone.action")
 
-        _dataBuilder.Append("sn=")
+        _dataBuilder.Append("phone=")
         _dataBuilder.Append(Me.txtUserPhone.Text)
         _dataBuilder.Append("&userPwd=")
         _dataBuilder.Append(MD5.MD5(Me.txtUserPwd.Text, 32).ToUpper())

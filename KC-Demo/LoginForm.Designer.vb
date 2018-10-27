@@ -41,7 +41,7 @@ Partial Class LoginForm
         Me.txtUserPhone.Name = "txtUserPhone"
         Me.txtUserPhone.Size = New System.Drawing.Size(175, 23)
         Me.txtUserPhone.TabIndex = 0
-        Me.txtUserPhone.Text = "U000000005"
+        Me.txtUserPhone.Text = "13757174049"
         '
         'Label1
         '
@@ -70,7 +70,7 @@ Partial Class LoginForm
         Me.txtUserPwd.Name = "txtUserPwd"
         Me.txtUserPwd.Size = New System.Drawing.Size(175, 23)
         Me.txtUserPwd.TabIndex = 2
-        Me.txtUserPwd.Text = "11111111"
+        Me.txtUserPwd.Text = "111111"
         '
         'Label3
         '

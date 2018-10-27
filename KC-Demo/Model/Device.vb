@@ -6,6 +6,7 @@ Public Class Device
     Private _deviceAddress As String
     Private _deviceAlias As String
     Private _deviceType As String
+    Private _deviceState As String
     Private _roomCode As String
     Private _hostCode As String
     Private _operations As List(Of DeviceOperation)
@@ -37,6 +38,16 @@ Public Class Device
         End Get
         Set(value As String)
             _deviceType = value
+        End Set
+    End Property
+
+    <JsonProperty("deviceState")>
+    Public Property DeviceState As String
+        Get
+            Return _deviceState
+        End Get
+        Set(value As String)
+            _deviceState = value
         End Set
     End Property
 
