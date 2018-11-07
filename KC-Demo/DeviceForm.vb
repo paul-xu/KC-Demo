@@ -16,14 +16,13 @@ Public Class DeviceForm
         Me._userInfo = userInfo
         Me._server = server
         Me._port = port
-        Me.Width = _device.Operations.Count * 120
     End Sub
 
     Private Sub DeviceForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Dim nTop As Long = 20, nLeft As Long = 20
 
         Select Case _device.DeviceType
-            Case "ZB-ST"
+            Case DeviceType.RF_2262_315_33_CT, DeviceType.ZB_CT, DeviceType.ZB_DM
                 Dim trackBar As New TrackBar
                 With trackBar
                     .Left += nLeft
@@ -32,7 +31,6 @@ Public Class DeviceForm
                     .Visible = True
                     .Maximum = 100
                     .Minimum = 0
-                    .Value = 20
                     .TickFrequency = 10
 
                     AddHandler .Scroll, AddressOf Tracker_Scroll
@@ -41,22 +39,40 @@ Public Class DeviceForm
                 Me.Width = 410
                 Me.Controls.Add(trackBar)
             Case Else
-                For Each operation In _device.Operations
+                Dim _iLoop As Integer = 0
+                While _iLoop < _device.Operations.Count
+                    Dim operation As DeviceOperation = _device.Operations(_iLoop)
                     Dim button As New Button
                     With button
                         .Left += nLeft
+                        .Width = 80
                         .Height = 30
                         .Top = nTop
                         .Visible = True
                         .Text = operation.Name
                         .Tag = operation.Code
-                        nLeft += .Width + 30
+                        .Font = New Font("Microsoft YaHei", 9, FontStyle.Regular)
 
                         AddHandler .Click, AddressOf OperationButton_Click
                     End With
 
                     Me.Controls.Add(button)
-                Next
+
+                    _iLoop = _iLoop + 1
+                    If _iLoop Mod 3 = 0 Then
+                        nTop = nTop + 50
+                        nLeft = 20
+                    Else
+                        nLeft = nLeft + 100
+                    End If
+                End While
+
+                Me.Width = 340
+                If _device.Operations.Count Mod 3 = 0 Then
+                    Me.Height = _device.Operations.Count \ 3 * 50 + 60
+                Else
+                    Me.Height = (_device.Operations.Count \ 3 + 1) * 50 + 60
+                End If
         End Select
     End Sub
 

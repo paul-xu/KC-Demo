@@ -24,20 +24,15 @@ Partial Class MainForm
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MainForm))
-        Me.lvDevice = New System.Windows.Forms.ListView()
         Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
         Me.tvConstruct = New System.Windows.Forms.TreeView()
+        Me.cms_Room = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.刷新ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.gpbDevices = New System.Windows.Forms.GroupBox()
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.cms_Room.SuspendLayout()
+        Me.GroupBox2.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'lvDevice
-        '
-        Me.lvDevice.LargeImageList = Me.ImageList1
-        Me.lvDevice.Location = New System.Drawing.Point(289, 17)
-        Me.lvDevice.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
-        Me.lvDevice.Name = "lvDevice"
-        Me.lvDevice.Size = New System.Drawing.Size(549, 406)
-        Me.lvDevice.TabIndex = 0
-        Me.lvDevice.UseCompatibleStateImageBehavior = False
         '
         'ImageList1
         '
@@ -50,27 +45,65 @@ Partial Class MainForm
         '
         'tvConstruct
         '
-        Me.tvConstruct.Location = New System.Drawing.Point(12, 17)
+        Me.tvConstruct.Location = New System.Drawing.Point(12, 22)
         Me.tvConstruct.Name = "tvConstruct"
-        Me.tvConstruct.Size = New System.Drawing.Size(271, 406)
+        Me.tvConstruct.Size = New System.Drawing.Size(283, 391)
         Me.tvConstruct.TabIndex = 1
+        '
+        'cms_Room
+        '
+        Me.cms_Room.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.刷新ToolStripMenuItem})
+        Me.cms_Room.Name = "cms_Room"
+        Me.cms_Room.Size = New System.Drawing.Size(101, 26)
+        Me.cms_Room.Text = "刷新"
+        '
+        '刷新ToolStripMenuItem
+        '
+        Me.刷新ToolStripMenuItem.Name = "刷新ToolStripMenuItem"
+        Me.刷新ToolStripMenuItem.Size = New System.Drawing.Size(100, 22)
+        Me.刷新ToolStripMenuItem.Text = "刷新"
+        '
+        'gpbDevices
+        '
+        Me.gpbDevices.Location = New System.Drawing.Point(329, 4)
+        Me.gpbDevices.Name = "gpbDevices"
+        Me.gpbDevices.Size = New System.Drawing.Size(674, 427)
+        Me.gpbDevices.TabIndex = 3
+        Me.gpbDevices.TabStop = False
+        Me.gpbDevices.Text = "设备"
+        '
+        'GroupBox2
+        '
+        Me.GroupBox2.Controls.Add(Me.tvConstruct)
+        Me.GroupBox2.Location = New System.Drawing.Point(12, 4)
+        Me.GroupBox2.Name = "GroupBox2"
+        Me.GroupBox2.Size = New System.Drawing.Size(304, 427)
+        Me.GroupBox2.TabIndex = 4
+        Me.GroupBox2.TabStop = False
+        Me.GroupBox2.Text = "楼层 房间"
         '
         'MainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 17.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(850, 441)
-        Me.Controls.Add(Me.tvConstruct)
-        Me.Controls.Add(Me.lvDevice)
+        Me.ClientSize = New System.Drawing.Size(1015, 442)
+        Me.Controls.Add(Me.GroupBox2)
+        Me.Controls.Add(Me.gpbDevices)
         Me.Font = New System.Drawing.Font("Microsoft YaHei", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
+        Me.MaximizeBox = False
         Me.Name = "MainForm"
         Me.Text = "Kincony"
+        Me.cms_Room.ResumeLayout(False)
+        Me.GroupBox2.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
-
-    Friend WithEvents lvDevice As ListView
     Friend WithEvents ImageList1 As ImageList
     Friend WithEvents tvConstruct As TreeView
+    Friend WithEvents cms_Room As ContextMenuStrip
+    Friend WithEvents 刷新ToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents gpbDevices As GroupBox
+    Friend WithEvents GroupBox2 As GroupBox
 End Class

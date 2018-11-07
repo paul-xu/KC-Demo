@@ -29,6 +29,8 @@ Partial Class DeviceForm
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(229, 71)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.MaximizeBox = False
         Me.Name = "DeviceForm"
         Me.Text = "DeviceForm"
         Me.ResumeLayout(False)

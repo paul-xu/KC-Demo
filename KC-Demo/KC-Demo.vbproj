@@ -99,6 +99,8 @@
     <Compile Include="MD5.vb" />
     <Compile Include="Model\Device.vb" />
     <Compile Include="Model\DeviceOperation.vb" />
+    <Compile Include="Model\Floor.vb" />
+    <Compile Include="Model\Room.vb" />
     <Compile Include="Model\UserInfo.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -115,6 +117,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Utility\DeviceType.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DeviceForm.resx">
@@ -144,6 +147,9 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="png\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

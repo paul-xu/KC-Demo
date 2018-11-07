@@ -41,7 +41,7 @@ Partial Class LoginForm
         Me.txtUserPhone.Name = "txtUserPhone"
         Me.txtUserPhone.Size = New System.Drawing.Size(175, 23)
         Me.txtUserPhone.TabIndex = 0
-        Me.txtUserPhone.Text = "13757174049"
+        Me.txtUserPhone.Text = "13575789565"
         '
         'Label1
         '
@@ -89,7 +89,7 @@ Partial Class LoginForm
         Me.txtServer.Name = "txtServer"
         Me.txtServer.Size = New System.Drawing.Size(175, 23)
         Me.txtServer.TabIndex = 4
-        Me.txtServer.Text = "118.31.187.235"
+        Me.txtServer.Text = "voice.hificat.com"
         '
         'Label4
         '
@@ -145,6 +145,9 @@ Partial Class LoginForm
         Me.Controls.Add(Me.txtUserPwd)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.txtUserPhone)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.Name = "LoginForm"
         Me.Text = "用户登录"
         Me.ResumeLayout(False)

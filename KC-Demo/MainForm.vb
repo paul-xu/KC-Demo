@@ -41,36 +41,82 @@ Public Class MainForm
         Dim jsonResponse = JObject.Parse(strResponse)
         Dim status = jsonResponse("status").ToObject(Of String)
 
-        lvDevice.Items.Clear()
+        gpbDevices.Controls.Clear()
         If status.Equals("0") Then
-            Dim deviceResults = jsonResponse("result").Children().ToList()
+            Dim deviceResults As List(Of JToken) = jsonResponse("result").Children().ToList()
 
-            For Each result In deviceResults
-                Dim device = result.ToObject(Of Device)()
-                Dim item As New ListViewItem
-                item.Tag = device
+            Dim _startX As Integer = 30
+            Dim _startY As Integer = 22
 
+            Dim _counter As Integer = 0
+            For Each _item As JToken In deviceResults
+                Dim device = _item.ToObject(Of Device)
+                Dim _deviceIcon As PictureBox = New PictureBox()
+                Dim _deviceLabel As Label = New Label()
+
+                _deviceIcon.Tag = device
+                _deviceLabel.Text = device.DeviceAlias
                 Select Case device.DeviceType
-                    Case "ZB-ST"
+                    Case DeviceType.ZB_ST
                         If device.DeviceState.Equals("0") Then
-                            item.ImageIndex = 1
-                            item.Text = device.DeviceAlias + "(状态:关)"
+                            _deviceIcon.ImageLocation = "png\light-off.png"
+                            _deviceLabel.Text = _deviceLabel.Text + "(关)"
                         Else
-                            item.ImageIndex = 0
-                            item.Text = device.DeviceAlias + "(状态:开)"
+                            _deviceIcon.ImageLocation = "png\light-on.png"
+                            _deviceLabel.Text = _deviceLabel.Text + "(开)"
                         End If
-                    Case "RF-2262-315-33-ST"
-                        item.ImageIndex = 0
-                        item.Text = device.DeviceAlias
-                    Case "ZT-CT"
-                        item.ImageIndex = 3
-                        item.Text = device.DeviceAlias + "(" + device.DeviceState + "%)"
-                    Case "RF-2262-315-33-CT"
-                        item.ImageIndex = 3
-                        item.Text = device.DeviceAlias
+                    Case DeviceType.RF_2262_315_33_ST
+                        _deviceIcon.ImageLocation = "png\light-on.png"
+                    Case DeviceType.ZB_CT
+                        _deviceIcon.ImageLocation = "png\curtain.png"
+                        _deviceLabel.Text = _deviceLabel.Text + "(" + device.DeviceState + "%)"
+                    Case DeviceType.RF_2262_315_33_CT
+                        _deviceIcon.ImageLocation = "png\curtain.png"
+                    Case DeviceType.ZB_IF_TV
+                        _deviceIcon.ImageLocation = "png\TV.png"
+                    Case DeviceType.ZB_IF_AMP
+                        _deviceIcon.ImageLocation = "png\AMP.png"
+                    Case DeviceType.ZB_IF_AC
+                        _deviceIcon.ImageLocation = "png\AC.png"
+                    Case DeviceType.ZB_IF_BGMSC, DeviceType.ZB_IF_TVBOX
+                        _deviceIcon.ImageLocation = "png\Other.png"
+                    Case Else
+                        _deviceIcon = Nothing
+                        _deviceLabel = Nothing
                 End Select
 
-                lvDevice.Items.Add(item)
+                If _deviceIcon IsNot Nothing Then
+                    With _deviceIcon
+                        .Width = 62
+                        .Height = 62
+                        .Location = New Point(_startX, _startY)
+                        .SizeMode = PictureBoxSizeMode.StretchImage
+                        .Parent = gpbDevices
+
+                        AddHandler .MouseLeave, AddressOf Me.DeviceIcon_MouseLeave
+                        AddHandler .MouseEnter, AddressOf Me.DeviceIcon_MouseEnter
+                        AddHandler .MouseDown, AddressOf Me.DeviceIcon_MouseDown
+                        AddHandler .MouseUp, AddressOf Me.DeviceIcon_MouseUp
+                    End With
+                End If
+
+                If _deviceLabel IsNot Nothing Then
+                    'Dim _offsetX = (_deviceIcon.Size.Width - _deviceLabel.Size.Width) / 2
+                    With _deviceLabel
+                        .Location = New Point(_startX, _startY + 68)
+                        .TextAlign = ContentAlignment.TopCenter
+                        .AutoSize = True
+                        .Parent = gpbDevices
+                    End With
+
+                    _startX = _startX + 90
+                    _counter = _counter + 1
+                End If
+
+                If (_counter Mod 7 = 0) Then
+                    _startX = 30
+                    _startY = _startY + 120
+                End If
             Next
         End If
     End Sub
@@ -102,6 +148,7 @@ Public Class MainForm
                 Dim item As New TreeNode
                 item.Text = room.RoomAlias
                 item.Tag = room
+                item.ContextMenuStrip = cms_Room
 
                 parentNode.Nodes.Add(item)
             Next
@@ -142,17 +189,44 @@ Public Class MainForm
         End If
     End Sub
 
-    Private Sub lvDevice_DoubleClick(sender As Object, e As EventArgs) Handles lvDevice.DoubleClick
-        Dim listItem = lvDevice.SelectedItems.Item(0)
-        Dim device = CType(listItem.Tag, Device)
-
-        Dim deviceForm As New DeviceForm(device, _userInfo, _server, _port)
-        deviceForm.ShowDialog()
-    End Sub
-
     Private Sub tvConstruct_AfterSelect(sender As Object, e As TreeViewEventArgs) Handles tvConstruct.AfterSelect
         If TypeOf (e.Node.Tag) Is Room Then
             Dim room = CType(e.Node.Tag, Room)
+            If room IsNot Nothing Then
+                LoadDevicesByRoom(_userInfo, room.RoomCode)
+            End If
+        End If
+    End Sub
+
+    Private Sub DeviceIcon_MouseLeave(sender As Object, e As EventArgs)
+        Dim Image = CType(sender, Control)
+        Image.Location = New Point(Image.Location.X - 1, Image.Location.Y - 1)
+    End Sub
+
+    Private Sub DeviceIcon_MouseDown(sender As Object, e As MouseEventArgs)
+        Dim Image = CType(sender, Control)
+        Image.Location = New Point(Image.Location.X + 2, Image.Location.Y + 2)
+    End Sub
+
+    Private Sub DeviceIcon_MouseUp(sender As Object, e As MouseEventArgs)
+        Dim Image = CType(sender, Control)
+        Image.Location = New Point(Image.Location.X - 2, Image.Location.Y - 2)
+
+        Dim device = CType(Image.Tag, Device)
+        Dim _deviceForm As DeviceForm = New DeviceForm(device, _userInfo, _server, _port)
+        _deviceForm.ShowDialog()
+    End Sub
+
+    Private Sub DeviceIcon_MouseEnter(sender As Object, e As EventArgs)
+        Dim Image = CType(sender, Control)
+        Image.Location = New Point(Image.Location.X + 1, Image.Location.Y + 1)
+    End Sub
+
+    Private Sub cms_Room_Click(sender As Object, e As EventArgs) Handles cms_Room.Click
+        Dim node As TreeNode = tvConstruct.SelectedNode
+
+        If TypeOf (node.Tag) Is Room Then
+            Dim room = CType(node.Tag, Room)
             If room IsNot Nothing Then
                 LoadDevicesByRoom(_userInfo, room.RoomCode)
             End If
