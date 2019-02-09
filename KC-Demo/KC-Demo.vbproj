@@ -46,6 +46,9 @@
   <PropertyGroup>
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>application_icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
       <HintPath>extLib\Newtonsoft.Json.dll</HintPath>
@@ -83,6 +86,12 @@
     </Compile>
     <Compile Include="HttpUtils.vb" />
     <Compile Include="JsonResponse.vb" />
+    <Compile Include="LoadingForm.Designer.vb">
+      <DependentUpon>LoadingForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="LoadingForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="LoginForm.Designer.vb">
       <DependentUpon>LoginForm.vb</DependentUpon>
     </Compile>
@@ -99,6 +108,7 @@
     <Compile Include="MD5.vb" />
     <Compile Include="Model\Device.vb" />
     <Compile Include="Model\DeviceOperation.vb" />
+    <Compile Include="Model\EnclosureSwitch.vb" />
     <Compile Include="Model\Floor.vb" />
     <Compile Include="Model\Room.vb" />
     <Compile Include="Model\UserInfo.vb" />
@@ -122,6 +132,9 @@
   <ItemGroup>
     <EmbeddedResource Include="DeviceForm.resx">
       <DependentUpon>DeviceForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoadingForm.resx">
+      <DependentUpon>LoadingForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LoginForm.resx">
       <DependentUpon>LoginForm.vb</DependentUpon>
@@ -150,6 +163,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="png\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="application_icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

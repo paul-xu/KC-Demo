@@ -22,6 +22,7 @@ Partial Class LoginForm
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(LoginForm))
         Me.txtUserPhone = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
@@ -70,7 +71,7 @@ Partial Class LoginForm
         Me.txtUserPwd.Name = "txtUserPwd"
         Me.txtUserPwd.Size = New System.Drawing.Size(175, 23)
         Me.txtUserPwd.TabIndex = 2
-        Me.txtUserPwd.Text = "111111"
+        Me.txtUserPwd.Text = "999999"
         '
         'Label3
         '
@@ -89,7 +90,7 @@ Partial Class LoginForm
         Me.txtServer.Name = "txtServer"
         Me.txtServer.Size = New System.Drawing.Size(175, 23)
         Me.txtServer.TabIndex = 4
-        Me.txtServer.Text = "voice.hificat.com"
+        Me.txtServer.Text = "127.0.0.1"
         '
         'Label4
         '
@@ -108,7 +109,7 @@ Partial Class LoginForm
         Me.txtPort.Name = "txtPort"
         Me.txtPort.Size = New System.Drawing.Size(46, 23)
         Me.txtPort.TabIndex = 6
-        Me.txtPort.Text = "8080"
+        Me.txtPort.Text = "9090"
         '
         'btnLogin
         '
@@ -146,6 +147,7 @@ Partial Class LoginForm
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.txtUserPhone)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "LoginForm"

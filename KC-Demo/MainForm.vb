@@ -3,9 +3,15 @@ Imports Newtonsoft.Json.Linq
 
 Public Class MainForm
     Private _loginForm As New LoginForm
+    Private _loadingForm As New LoadingForm
+    Private _deviceForm As DeviceForm
     Private _userInfo As UserInfo
     Private _server As String
     Private _port As String
+
+    Private Delegate Function DelFetchEncolsureSwitches(ByVal deviceAddress As String) As List(Of EnclosureSwitch)
+
+    Private _delFetchEnclosureSwitches As New DelFetchEncolsureSwitches(AddressOf FetchEncolsureSwitches)
 
     Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         If _loginForm.ShowDialog() = DialogResult.OK Then
@@ -80,6 +86,8 @@ Public Class MainForm
                         _deviceIcon.ImageLocation = "png\AC.png"
                     Case DeviceType.ZB_IF_BGMSC, DeviceType.ZB_IF_TVBOX
                         _deviceIcon.ImageLocation = "png\Other.png"
+                    Case DeviceType.CTL_ENCLOSURE
+                        _deviceIcon.ImageLocation = "png\enclosure.png"
                     Case Else
                         _deviceIcon = Nothing
                         _deviceLabel = Nothing
@@ -189,6 +197,41 @@ Public Class MainForm
         End If
     End Sub
 
+    Private Function FetchEncolsureSwitches(ByVal deviceAddress As String) As List(Of EnclosureSwitch)
+        Dim urlBuilder As New StringBuilder
+        urlBuilder.Append("HTTP://" & _server & ":" & _port)
+        urlBuilder.Append("/smarthome.IMCPlatform//device/v1.0/fetchEnclosureSwitches.action")
+
+        Dim requestHeaders As New Dictionary(Of String, String)
+        requestHeaders.Add("nonce", "ABCDEF")
+        requestHeaders.Add("access_token", _userInfo.AccessToken)
+        requestHeaders.Add("userCode", _userInfo.UserCode)
+        Dim milliseconds = CLng(DateTime.UtcNow.Subtract(New DateTime(1970, 1, 1)).TotalMilliseconds)
+        requestHeaders.Add("timestamp", milliseconds.ToString)
+
+        Dim sign = HttpUtils.GenerateSign(_userInfo.AccessToken, "ABCDEF", milliseconds, _userInfo.UserCode)
+        requestHeaders.Add("sign", sign)
+
+        Dim dataBuilder As New StringBuilder
+        dataBuilder.Append("deviceAddress=" & deviceAddress)
+
+        Dim strResponse = HttpUtils.GetData(urlBuilder.ToString, dataBuilder.ToString, requestHeaders)
+        Dim jsonResponse = JObject.Parse(strResponse)
+        Dim status = jsonResponse("status").ToObject(Of String)
+
+        If status.Equals("0") Then
+            Dim switchResults As List(Of JToken) = jsonResponse("result").Children().ToList()
+            Dim switchList As List(Of EnclosureSwitch) = New List(Of EnclosureSwitch)
+            For Each _item As JToken In switchResults
+                Dim switch = _item.ToObject(Of EnclosureSwitch)
+                switchList.Add(switch)
+            Next
+            FetchEncolsureSwitches = switchList
+        Else
+            FetchEncolsureSwitches = Nothing
+        End If
+    End Function
+
     Private Sub tvConstruct_AfterSelect(sender As Object, e As TreeViewEventArgs) Handles tvConstruct.AfterSelect
         If TypeOf (e.Node.Tag) Is Room Then
             Dim room = CType(e.Node.Tag, Room)
@@ -213,8 +256,33 @@ Public Class MainForm
         Image.Location = New Point(Image.Location.X - 2, Image.Location.Y - 2)
 
         Dim device = CType(Image.Tag, Device)
-        Dim _deviceForm As DeviceForm = New DeviceForm(device, _userInfo, _server, _port)
-        _deviceForm.ShowDialog()
+
+        If device.DeviceType = DeviceType.CTL_ENCLOSURE Then
+            _delFetchEnclosureSwitches.BeginInvoke(device.DeviceAddress, New AsyncCallback(
+                                                   Sub(ar As IAsyncResult)
+                                                       If Me.InvokeRequired Then
+                                                           Me.Invoke(Sub()
+                                                                         _loadingForm.Close()
+                                                                     End Sub)
+                                                       Else
+                                                           _loadingForm.Close()
+                                                       End If
+
+                                                       Dim listEnclosureSwitches As List(Of EnclosureSwitch) = _delFetchEnclosureSwitches.EndInvoke(ar)
+                                                       If Me.InvokeRequired Then
+                                                           Me.Invoke(Sub()
+                                                                         LaunchDeviceForm(device, listEnclosureSwitches)
+                                                                     End Sub)
+                                                       Else
+                                                           LaunchDeviceForm(device, listEnclosureSwitches)
+                                                       End If
+                                                   End Sub), Nothing)
+            _loadingForm.LoadingText = "正在读取控制盒开关状态……"
+            _loadingForm.ShowDialog()
+        Else
+            _deviceForm = New DeviceForm(device, _userInfo, _server, _port)
+            _deviceForm.ShowDialog()
+        End If
     End Sub
 
     Private Sub DeviceIcon_MouseEnter(sender As Object, e As EventArgs)
@@ -230,6 +298,15 @@ Public Class MainForm
             If room IsNot Nothing Then
                 LoadDevicesByRoom(_userInfo, room.RoomCode)
             End If
+        End If
+    End Sub
+
+    Private Sub LaunchDeviceForm(ByVal device As Device, ByVal listEnclosureSwitches As List(Of EnclosureSwitch))
+        If listEnclosureSwitches IsNot Nothing Then
+            _deviceForm = New DeviceForm(device, _userInfo, _server, _port, listEnclosureSwitches)
+            _deviceForm.ShowDialog()
+        Else
+            MessageBox.Show(Me, "无法读取控制盒开关状态，请检查控制盒是否连接正常……")
         End If
     End Sub
 End Class

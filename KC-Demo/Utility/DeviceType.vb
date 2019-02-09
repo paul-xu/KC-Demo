@@ -9,4 +9,5 @@
     Public Shared ReadOnly ZB_IF_AMP As String = "ZB-IF-AMP"
     Public Shared ReadOnly ZB_IF_BGMSC As String = "ZB-IF-BGMSC"
     Public Shared ReadOnly ZB_IF_TVBOX As String = "ZB-IF-TVBOX"
+    Public Shared ReadOnly CTL_ENCLOSURE As String = "CTL-ENCLOSURE"
 End Class
