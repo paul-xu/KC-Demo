@@ -71,7 +71,6 @@ Partial Class LoginForm
         Me.txtUserPwd.Name = "txtUserPwd"
         Me.txtUserPwd.Size = New System.Drawing.Size(175, 23)
         Me.txtUserPwd.TabIndex = 2
-        Me.txtUserPwd.Text = "999999"
         '
         'Label3
         '
@@ -90,7 +89,7 @@ Partial Class LoginForm
         Me.txtServer.Name = "txtServer"
         Me.txtServer.Size = New System.Drawing.Size(175, 23)
         Me.txtServer.TabIndex = 4
-        Me.txtServer.Text = "127.0.0.1"
+        Me.txtServer.Text = "voice.hificat.com"
         '
         'Label4
         '
@@ -109,7 +108,7 @@ Partial Class LoginForm
         Me.txtPort.Name = "txtPort"
         Me.txtPort.Size = New System.Drawing.Size(46, 23)
         Me.txtPort.TabIndex = 6
-        Me.txtPort.Text = "9090"
+        Me.txtPort.Text = "8080"
         '
         'btnLogin
         '

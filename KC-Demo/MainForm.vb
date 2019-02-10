@@ -86,7 +86,7 @@ Public Class MainForm
                         _deviceIcon.ImageLocation = "png\AC.png"
                     Case DeviceType.ZB_IF_BGMSC, DeviceType.ZB_IF_TVBOX
                         _deviceIcon.ImageLocation = "png\Other.png"
-                    Case DeviceType.CTL_ENCLOSURE
+                    Case DeviceType.CTL_ENCLOSURE_8, DeviceType.CTL_ENCLOSURE_32
                         _deviceIcon.ImageLocation = "png\enclosure.png"
                     Case Else
                         _deviceIcon = Nothing
@@ -257,7 +257,7 @@ Public Class MainForm
 
         Dim device = CType(Image.Tag, Device)
 
-        If device.DeviceType = DeviceType.CTL_ENCLOSURE Then
+        If device.DeviceType = DeviceType.CTL_ENCLOSURE_8 Or device.DeviceType = DeviceType.CTL_ENCLOSURE_32 Then
             _delFetchEnclosureSwitches.BeginInvoke(device.DeviceAddress, New AsyncCallback(
                                                    Sub(ar As IAsyncResult)
                                                        If Me.InvokeRequired Then

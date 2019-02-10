@@ -47,14 +47,16 @@ Public Class DeviceForm
 
                 Me.Width = 410
                 Me.Controls.Add(trackBar)
-            Case DeviceType.CTL_ENCLOSURE
-                RenderEnclosureLayout()
+            Case DeviceType.CTL_ENCLOSURE_8, DeviceType.CTL_ENCLOSURE_32
+                Me.Width = IIf(_enclosureSwitches.Count > 8, 620, 340)
+                Dim NumOfSwitchesInRow = IIf(_enclosureSwitches.Count > 8, 8, 4)
 
-                Me.Width = 340
-                If _enclosureSwitches.Count Mod 4 = 0 Then
-                    Me.Height = (_enclosureSwitches.Count \ 4) * 80 + 60
+                RenderEnclosureLayout(NumOfSwitchesInRow)
+
+                If _enclosureSwitches.Count Mod NumOfSwitchesInRow = 0 Then
+                    Me.Height = (_enclosureSwitches.Count \ NumOfSwitchesInRow) * 80 + 60
                 Else
-                    Me.Height = (_enclosureSwitches.Count \ 4 + 1) * 80 + 60
+                    Me.Height = (_enclosureSwitches.Count \ NumOfSwitchesInRow + 1) * 80 + 60
                 End If
             Case Else
                 Dim _iLoop As Integer = 0
@@ -142,7 +144,7 @@ Public Class DeviceForm
         HttpUtils.GetData(urlBuilder.ToString, dataBuilder.ToString, requestHeaders)
     End Sub
 
-    Private Sub RenderEnclosureLayout()
+    Private Sub RenderEnclosureLayout(ByVal numOfSwitchesInRow)
         Dim _startX As Integer = 30
         Dim _startY As Integer = 18
 
@@ -183,7 +185,7 @@ Public Class DeviceForm
             _startX = _startX + 70
             _counter = _counter + 1
 
-            If (_counter Mod 4 = 0) Then
+            If (_counter Mod numOfSwitchesInRow = 0) Then
                 _startX = 30
                 _startY = _startY + 80
             End If
