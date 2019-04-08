@@ -119,11 +119,11 @@ Public Class MainForm
 
                     _startX = _startX + 90
                     _counter = _counter + 1
-                End If
 
-                If (_counter Mod 7 = 0) Then
-                    _startX = 30
-                    _startY = _startY + 120
+                    If (_counter Mod 7 = 0) Then
+                        _startX = 30
+                        _startY = _startY + 120
+                    End If
                 End If
             Next
         End If

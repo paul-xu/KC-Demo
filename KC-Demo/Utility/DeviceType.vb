@@ -1,7 +1,7 @@
 ﻿Public Class DeviceType
     Public Shared ReadOnly ZB_ST As String = "ZB-ST"
-    Public Shared ReadOnly ZB_CT As String = "ZT-CT"
-    Public Shared ReadOnly ZB_DM As String = "ZT-DM"
+    Public Shared ReadOnly ZB_CT As String = "ZB-CT"
+    Public Shared ReadOnly ZB_DM As String = "ZB-DM"
     Public Shared ReadOnly RF_2262_315_33_ST As String = "RF-2262-315-33-ST"
     Public Shared ReadOnly RF_2262_315_33_CT As String = "RF-2262-315-33-CT"
     Public Shared ReadOnly ZB_IF_TV As String = "ZB-IF-TV"
